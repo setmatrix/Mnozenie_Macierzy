@@ -15,6 +15,9 @@ class matrix
 {
 public:
 	long** macierz;
+	int l;
+	int n;
+	int m;
 	matrix()
 	{
 		macierz = new long* [3];
@@ -31,14 +34,14 @@ public:
 		}
 		delete[] macierz;
 	}
-	/*matrix operator*(const matrix &v)
+	long operator*(const matrix& v)
 	{
-		return (this->v * v.macierz[1][1])
+		return (this->l * v.macierz[n][m]);
 	}
-	matrix operator+(const matrix &v)
+	long operator+(const matrix &v)
 	{
-		return (this->v + v.macierz[1][1])
-	}*/
+		return (this->l + v.macierz[n][m]);
+	}
 };
 
 void read_from_file(int C, int M)
