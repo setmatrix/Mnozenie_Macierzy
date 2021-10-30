@@ -3,93 +3,135 @@
 #include <sstream>
 #include <vector>
 #include <cstdlib>
-#include <cstring>
 #include <string>
 #include <iomanip>
 
 using namespace std;
 
-string* S[];
+/*string* S[];
 
 class matrix
 {
 public:
-	long** macierz;
-	matrix()
-	{
-		macierz = new long* [3];
-		for (int i = 0; i < 3; i++)
-		{
-			macierz[i] = new long[3];
-		}
-	}
-	~matrix()
-	{
-		for (int i = 0; i < 3; i++)
-		{
-			delete[] macierz[i];
-		}
-		delete[] macierz;
-	}
-	/*matrix operator*(const matrix &v)
-	{
-		return (this->v * v.macierz[1][1])
-	}
-	matrix operator+(const matrix &v)
-	{
-		return (this->v + v.macierz[1][1])
-	}*/
+	static long** macierz;
+	static vector <long> wektor;
+	matrix();
+	~matrix();
 };
 
-void read_from_file(int C, int M)
+matrix::matrix()
 {
-	string linia;
-	fstream plik;
-	string slowo;
-
-	bool isCandM = true;
-
-	plik.open("cipher*.in", ios::in);
-	if (plik.good() == true)
+	macierz = new long*[3];
+	for (int i = 0; i < 3; i++)
 	{
-		while (!plik.eof())
-		{
-			getline(plik, linia);
-			if (isCandM)
-			{
-				for (int i = 0; i < linia.size(); i++)
-				{
-					if (linia[i] == ' ')
-					{
-						C = stoi(slowo);
-						slowo.clear();
-					}
-					else if (linia[i] == '\0')
-					{
-						M = stoi(slowo);
-						slowo.clear();
-					}
-					else
-					{
-						slowo[i] = linia[i];
-					}
-				}
-				isCandM = false;
-			}
-			else
-			{
+		macierz[i] = new long[3];
+	}
 
-			}
+	for (int i = 0; i < 3; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			cin >> macierz[i][j];
 		}
-		plik.close();
+	}
+	long l;
+	for (int i = 0; i < 3; i++)
+	{
+		cin >> l;
+		wektor.push_back(l);
 	}
 }
 
 
 
+matrix::~matrix()
+{
+	for (int i = 0; i < 3; i++)
+	{
+		delete[] macierz[i];
+	}
+	delete[] macierz;
+}
+
+void mnozenie(long ** macierz, vector <long> wektor)
+{
+	//long det = macierz[1][1] * macierz[2][2] * macierz[3][3] + macierz[1][2] * macierz[2][3] * macierz[3][1] + macierz[1][3] * macierz[2][1] * macierz[3][2]
+	//	- macierz[1][3] * macierz[2][2]*macierz[3][1] - macierz[1][2] * macierz[2][1] * macierz[3][3] - macierz[1][1] * macierz[2][3] * macierz[3][2];
+
+	long result[3] = { 0,0,0 };
+	for (int i = 0; i < 3; i++)
+		for (int j = 0; j < 3; j++) {
+			result[i] += macierz[i][j] * wektor[i];
+		}
+}
+
+void ladowanie()
+{
+	string linia;
+	fstream plik;
+
+	plik.open("plik.txt", ios::in);
+	if (plik.good() == true)
+	{
+		int i = 0;
+		while (!plik.eof())
+		{
+			i++;
+			getline(plik, linia);
+		}
+		S[i] = new string[i];
+		while (!plik.eof())
+		{
+			S[i] = getline(plik, linia);
+			i--;
+		}
+		plik.close();
+	}
+}
+*/
+
+// Create an array for memoization
+
+
+// Returns n'th fibonacci number using table f[]
+
+
+long* f;
+int fib(int n)
+{
+	// Base cases
+	if (n == 0)
+		return 0;
+	if (n == 1 || n == 2)
+		return (f[n] = 1);
+
+	// If fib(n) is already computed
+	if (f[n])
+		return f[n];
+
+	int k = (n & 1) ? (n + 1) / 2 : n / 2;
+
+	// Applying above formula [Note value n&1 is 1
+	// if n is odd, else 0.
+	f[n] = (n & 1) ? (fib(k) * fib(k) + fib(k - 1) * fib(k - 1))
+		: (2 * fib(k - 1) + fib(k)) * fib(k);
+
+	return f[n];
+}
+
+long fibonacci(long n)
+{
+	f = new long[n] = { 0 };
+	return fib(n);
+}
 int main()
 {
-	matrix A;
-	int C, M;
+	//matrix();
+	//mnozenie(matrix::macierz, matrix::wektor);
 	//ladowanie();
+	long n = 5;
+
+	cout << " " << fibonacci(n);
+
+	return 0;
 }
