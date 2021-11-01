@@ -95,10 +95,10 @@ void ladowanie()
 
 // Returns n'th fibonacci number using table f[]
 
-const int MAX = 1000;
+//const int MAX = 1000;
 
 // Create an array for memoization
-int f[MAX] = { 0 };
+//int f[MAX] = { 0 };
 /*long fib(long n,long c)
 {
 	// Base cases
@@ -127,7 +127,7 @@ int f[MAX] = { 0 };
 	return fib(n);
 }*/
 
-long CCC(long c)
+/*long CCC(long c)
 {
 	long tab[3][3] = { { c,1,1 }, { 1, 0, 0 }, { 0, 0, 1 } };
 	long vector[3] = { 1,1,(2 - c) };
@@ -152,8 +152,8 @@ long CCC(long c)
 			cout << result[j]<<" ";
 		}
 	return 0;
-}
-void test()
+}*/
+/*void test()
 {
 	long matrixx[2][2] = { {1,1},{1,0} };
 	long wektor[2] = { 1, 0 };
@@ -174,7 +174,7 @@ void test()
 		}
 		cout << endl;
 	}
-}
+}*/
 
 unsigned long long fibo(int n,long c)
 {
@@ -202,8 +202,8 @@ unsigned long long fibo(int n,long c)
 		{
 			// wykonujemy mnożenie P = W x Q
 
-			p11 = w11 * q11 + w12 * q21; p12 = w11 * q12 + w12 * q22;
-			p21 = w21 * q11 + w22 * q21; p22 = w21 * q12 + w22 * q22;
+			p11 = w11 * q11 + w12 * q21 * c; p12 = w11 * q12 + w12 * q22 * c;
+			p21 = w21 * q11 + w22 * q21 * c; p22 = w21 * q12 + w22 * q22 * c;
 
 			// wynik przenosimy: W = P
 
@@ -218,8 +218,8 @@ unsigned long long fibo(int n,long c)
 
 		// podnosimy Q do kwadratu:  P = Q x Q
 
-		p11 = q11 * q11 + q12 * q21; p12 = q11 * q12 + q12 * q22;
-		p21 = q21 * q11 + q22 * q21; p22 = q21 * q12 + q22 * q22;
+		p11 = q11 * q11 + q12 * q21 * c; p12 = q11 * q12 + q12 * q22 * c;
+		p21 = q21 * q11 + q22 * q21 * c; p22 = q21 * q12 + q22 * q22 * c;
 
 		// wynik przenosimy: Q = p
 
@@ -239,11 +239,12 @@ int main()
 	//matrix();
 	//mnozenie(matrix::macierz, matrix::wektor);
 	//ladowanie();
-	long n = 6;
+	long n = 7;
 	long c = 2;
 	//cout << " " << fib(n,c);
 	//cout << CCC(c);
 	//test();
-	cout << fibo(n,c);
+	cout << fib(n,c)<<endl;
+	cout << fibo(n, c);
 	return 0;
 }
