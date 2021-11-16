@@ -1,31 +1,53 @@
 ﻿#include <iostream>
 #include <fstream>
-#include <sstream>
 #include <vector>
 #include <cstdlib>
 #include <string>
 #include <iomanip>
+#include <ostream>
+#include <sstream>
 
 using namespace std;
 
 class matrix
 {
-public:
 	long long** macierz;
 	long long* wektor;
 	long long c;
+	long long row;
+	long long col;
+	long long* wynik;
+	long long n;
+	long long mod;
+	long long** macierzJednostkowa;
+public:
+	friend std::ostream& operator<<(std::ostream& out, const matrix& o);
 	matrix()
 	{
-		macierz = new long long* [3];
-		wektor = new long long[3];
-		for (int i = 0; i < 3; i++)
+		this->row = 3;
+		this->col = 3;
+		macierz = new long long* [row];
+		for (int i = 0; i < row; i++)
 		{
-			macierz[i] = new long long[3];
+			macierz[i] = new long long[col];
 		}
+		wynik = new long long [row] { 0, 0, 0 };
+		macierzJednostkowa = new long long* [row];
+		for (int i = 0; i < row; i++)
+		{
+			macierzJednostkowa[i] = new long long[col];
+		}
+		this->c = 0;
+		this->mod = 0;
 	}
-	matrix(long long c) : matrix()
+	matrix(long long c, long long n, long long mod) : matrix()
 	{
 		this->c = c;
+		wektor = new long long[row] { 2, 1, (2 - c)};
+		InitiateDataToMatrix();
+		this->n = n - 2;
+		this->mod = mod;
+
 	}
 	void InitiateDataToMatrix()
 	{
@@ -39,10 +61,8 @@ public:
 		macierz[2][1] = 0;
 		macierz[2][2] = 1;
 	}
-	void wyliczSn(long long n, long long M)
+	void wyliczSn()
 	{
-		long long wektor[3] = { 2,1,(2 - c) };
-		long long wynik[3] = { 0 };
 		long long macierzJednostkowa[3][3] = { {1,0,0 },{0,1,0},{0,0,1} };
 		long long pomocnicza[3][3] = { {0,0,0 },{0,0,0},{0,0,0} };
 		long long s;
@@ -66,7 +86,7 @@ public:
 				{
 					for (int j = 0; j < 3; j++)
 					{
-						macierzJednostkowa[i][j] = pomocnicza[i][j] % M;
+						macierzJednostkowa[i][j] = pomocnicza[i][j] % mod;
 					}
 				}
 			}
@@ -92,15 +112,6 @@ public:
 				}
 			}
 		}
-		for (int i = 0; i < 3; i++)
-		{
-			wynik[i] = 0;
-			for (int j = 0; j < 3; j++)
-			{
-				wynik[i] += (macierzJednostkowa[i][j] * wektor[j]);
-			}
-		}
-		cout << wynik[0] %M<< endl;
 	}
 	~matrix()
 	{
@@ -121,61 +132,38 @@ public:
 			cout << endl;
 		}
 	}
-	long long operator+(const matrix& t)
+	long long* operator+(const matrix& t)
 	{
 
 	}
-	long long operator*(const matrix& t)
+	long long* operator*(const matrix& t)
 	{
-
+		for (int i = 0; i < 3; i++)
+		{
+			wynik[i] = 0;
+			for (int j = 0; j < 3; j++)
+			{
+				wynik[i] += (this->macierzJednostkowa[i][j] * t.wektor[j]);
+			}
+		}
+		return wynik;
 	}
 };
 
-
-void mnozenie(long** macierz, vector <long> wektor)
+std::ostream& operator<<(std::ostream& out, const matrix& m)
 {
-	//long det = macierz[1][1] * macierz[2][2] * macierz[3][3] + macierz[1][2] * macierz[2][3] * macierz[3][1] + macierz[1][3] * macierz[2][1] * macierz[3][2]
-	//	- macierz[1][3] * macierz[2][2]*macierz[3][1] - macierz[1][2] * macierz[2][1] * macierz[3][3] - macierz[1][1] * macierz[2][3] * macierz[3][2];
-
-	long wynik[3] = { 0,0,0 };
-	for (int i = 0; i < 3; i++)
-		for (int j = 0; j < 3; j++) {
-			wynik[i] += macierz[i][j] * wektor[i];
-		}
+	return out << m.wynik[0];
 }
-/*
-void ladowanie()
-{
-	string linia;
-	fstream plik;
 
-	plik.open("plik.txt", ios::in);
-	if (plik.good() == true)
-	{
-		int i = 0;
-		while (!plik.eof())
-		{
-			i++;
-			getline(plik, linia);
-		}
-		S[i] = new string[i];
-		while (!plik.eof())
-		{
-			S[i] = getline(plik, linia);
-			i--;
-		}
-		plik.close();
-	}
-}
-*/
 int main()
 {
 	long long n = 9;
 	long long c = 3;
-	long long M = 7;
-	matrix macierz(c);
-	macierz.InitiateDataToMatrix();
-	macierz.wyliczSn(n-2, M);
-
+	long long mod = 7;
+	matrix macierz(c,n, mod);
+	matrix macierz2(c,n, mod);
+	macierz.wyliczSn();
+	long long* wynik = macierz * macierz2;
+	cout << wynik;
 	return 0;
 }
