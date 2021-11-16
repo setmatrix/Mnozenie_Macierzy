@@ -11,43 +11,42 @@ using namespace std;
 
 class matrix
 {
-	long long** macierz;
-	long long* wektor;
-	long long c;
-	long long row;
-	long long col;
-	long long* wynik;
-	long long n;
-	long long mod;
-	long long** macierzJednostkowa;
+private:
+	long long int** macierz;
+	long long int* wektor;
+	long long int c;
+	int row;
+	int col;
+	long long int* wynik;
+	long long int n;
+	long long int mod;
+	long long int** macierzJednostkowa;
 public:
 	friend std::ostream& operator<<(std::ostream& out, const matrix& o);
 	matrix()
 	{
-		this->row = 3;
-		this->col = 3;
+		this->row = this->col = 3;
 		macierz = new long long* [row];
 		for (int i = 0; i < row; i++)
 		{
 			macierz[i] = new long long[col];
 		}
-		wynik = new long long [row] { 0, 0, 0 };
+		wynik = new long long [3] { 0, 0, 0 };
 		macierzJednostkowa = new long long* [row];
 		for (int i = 0; i < row; i++)
 		{
 			macierzJednostkowa[i] = new long long[col];
 		}
-		this->c = 0;
-		this->mod = 0;
+		this->c = this->mod = this->n = 0;
+		this->wektor = NULL;
 	}
 	matrix(long long c, long long n, long long mod) : matrix()
 	{
 		this->c = c;
 		wektor = new long long[row] { 2, 1, (2 - c)};
 		InitiateDataToMatrix();
-		this->n = n - 2;
+		this->n = n-2;
 		this->mod = mod;
-
 	}
 	void InitiateDataToMatrix()
 	{
@@ -60,10 +59,19 @@ public:
 		macierz[2][0] = 0;
 		macierz[2][1] = 0;
 		macierz[2][2] = 1;
+
+		macierzJednostkowa[0][0] = 1;
+		macierzJednostkowa[0][1] = 0;
+		macierzJednostkowa[0][2] = 0;
+		macierzJednostkowa[1][0] = 0;
+		macierzJednostkowa[1][1] = 1;
+		macierzJednostkowa[1][2] = 0;
+		macierzJednostkowa[2][0] = 0;
+		macierzJednostkowa[2][1] = 0;
+		macierzJednostkowa[2][2] = 1;
 	}
 	void wyliczSn()
 	{
-		long long macierzJednostkowa[3][3] = { {1,0,0 },{0,1,0},{0,0,1} };
 		long long pomocnicza[3][3] = { {0,0,0 },{0,0,0},{0,0,0} };
 		long long s;
 		while (n)
@@ -120,6 +128,14 @@ public:
 			delete[] macierz[i];
 		}
 		delete[] macierz;
+		delete[] wektor;
+		delete[] wynik;
+		for (int i = 0; i < 3; i++)
+		{
+			delete[] macierzJednostkowa[i];
+		}
+		delete[] macierzJednostkowa;
+
 	}
 	void printMatrix()
 	{
@@ -132,38 +148,40 @@ public:
 			cout << endl;
 		}
 	}
-	long long* operator+(const matrix& t)
-	{
-
-	}
-	long long* operator*(const matrix& t)
+	void operator*(const matrix& t)
 	{
 		for (int i = 0; i < 3; i++)
 		{
-			wynik[i] = 0;
+			this->wynik[i] = 0;
 			for (int j = 0; j < 3; j++)
 			{
-				wynik[i] += (this->macierzJednostkowa[i][j] * t.wektor[j]);
+				this->wynik[i] += (this->macierzJednostkowa[i][j] * t.wektor[j]) % mod;
 			}
 		}
-		return wynik;
 	}
 };
 
 std::ostream& operator<<(std::ostream& out, const matrix& m)
 {
-	return out << m.wynik[0];
+	return out << m.wynik[0] % m.mod;
 }
 
 int main()
 {
-	long long n = 9;
-	long long c = 3;
-	long long mod = 7;
-	matrix macierz(c,n, mod);
-	matrix macierz2(c,n, mod);
-	macierz.wyliczSn();
-	long long* wynik = macierz * macierz2;
-	cout << wynik;
+	long long n = 2;
+	long long c = 1;
+	long long mod = 10;
+	if (n >= 2)
+	{
+		matrix macierz(c, n, mod);
+		matrix macierz2(c, n, mod);
+		macierz.wyliczSn();
+		macierz* macierz2;
+		cout << macierz;
+	}
+	else if(n==1)
+	{
+		cout << n;
+	}
 	return 0;
 }
