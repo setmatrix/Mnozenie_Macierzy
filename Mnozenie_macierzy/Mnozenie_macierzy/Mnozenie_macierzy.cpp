@@ -163,25 +163,37 @@ public:
 
 std::ostream& operator<<(std::ostream& out, const matrix& m)
 {
-	return out << m.wynik[0] % m.mod;
+	return out << m.wynik[0] % m.mod << endl;
 }
 
 int main()
 {
-	long long n = 2;
-	long long c = 1;
-	long long mod = 10;
-	if (n >= 2)
+	int t;
+	long long n = 0;
+	long long c = 0;
+	long long mod = 0;
+	cout << "Podaj c\n";
+	cin >> c;
+	cout << "\nPodaj modulo\n";
+	cin >> mod;
+	cout << "\nPodaj ilosc cyfr\n";
+	cin >> t;
+	for (; t > 0; t--)
 	{
-		matrix macierz(c, n, mod);
-		matrix macierz2(c, n, mod);
-		macierz.wyliczSn();
-		macierz* macierz2;
-		cout << macierz;
-	}
-	else if(n==1)
-	{
-		cout << n;
+		cout << "Podaj n\n";
+		cin >> n;
+		if (n >= 2)
+		{
+			matrix macierz(c, n, mod);
+			matrix macierz2(c, n, mod);
+			macierz.wyliczSn();
+			macierz* macierz2;
+			cout << macierz;
+		}
+		else if (n == 1)
+		{
+			cout << n << endl;
+		}
 	}
 	return 0;
 }
